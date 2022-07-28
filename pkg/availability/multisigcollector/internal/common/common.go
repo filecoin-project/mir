@@ -48,7 +48,7 @@ func (params *ModuleParams) F() int {
 	return (params.N() - 1) / 3
 }
 
-// State represents the common state used by all parts of the multisig collector implementation.
+// State represents the common state accessible to all parts of the multisig collector implementation.
 type State struct {
 	BatchStore       map[t.BatchID][]t.TxID
 	TransactionStore map[t.TxID][]byte

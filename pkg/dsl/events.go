@@ -7,6 +7,7 @@ import (
 	"github.com/filecoin-project/mir/pkg/pb/dslpb"
 	"github.com/filecoin-project/mir/pkg/pb/eventpb"
 	"github.com/filecoin-project/mir/pkg/pb/messagepb"
+	"github.com/filecoin-project/mir/pkg/pb/requestpb"
 	t "github.com/filecoin-project/mir/pkg/types"
 )
 
@@ -224,5 +225,12 @@ func UponOneHashResult[C any](m Module, handler func(hash []byte, context *C) er
 func UponMessageReceived(m Module, handler func(from t.NodeID, msg *messagepb.Message) error) {
 	UponEvent[*eventpb.Event_MessageReceived](m, func(ev *eventpb.MessageReceived) error {
 		return handler(t.NodeID(ev.From), ev.Msg)
+	})
+}
+
+// UponNewRequests invokes handler when the module receives a NewRequests event.
+func UponNewRequests(m Module, handler func(requests []*requestpb.Request) error) {
+	UponEvent[*eventpb.Event_NewRequests](m, func(ev *eventpb.NewRequests) error {
+		return handler(ev.Requests)
 	})
 }
